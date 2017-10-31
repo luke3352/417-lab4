@@ -93,59 +93,24 @@ public class TrackingMockSession implements ValidatingStockServiceSession {
 		//described in the lab instructions.
 		//this is where you put "verify() and InOrder()" stuff.
 
-		//verify(mock);
-		//inOrder(mock);
-		//InOrder(mock);
 		System.out.println("HELLOOOOOOOOOOO");
 
-		verify(delegate, times(1)).login("Tom", "123");
-		try {
-			InOrder right = inOrder(delegate);
-			right.verify(delegate, times(1)).login("Tom", "123");
-			right.verify(delegate, atLeast(1)).getCurrentPrice(any(Stock.class));
-			System.out.println("STUFF");
-		}
-		catch (Exception e){
 
-		}
-		try {
-			InOrder wrong = inOrder(delegate);
-			wrong.verify(delegate, atLeast(1)).getCurrentPrice(any(Stock.class));
-			wrong.verify(delegate, times(1)).login("Tom", "123");
-			System.out.println("STUFF2");
+        try {
+            // Verify that someone has logged in and that maxSessionRequests have not been reached
+            verify(delegate, atLeastOnce()).login("Tom", "123");
+            verify(delegate, atMost(maxSessionRequests)).getCurrentPrice(any(Stock.class));
+            //verify(delegate, timeout(maxSessionDuration).atMost(maxSessionRequests)).getCurrentPrice(any(Stock.class));
 
-			throw new VerificationInOrderFailure("Accessed price before login");
-		}
-		catch (Exception e){
+            InOrder right = inOrder(delegate);
+            right.verify(delegate, times(1)).login("Tom", "123");
+            right.verify(delegate, atLeast(1)).getCurrentPrice(any(Stock.class));
+        }
+        catch(Exception e) {
+            throw new VerificationInOrderFailure("Methods called in the wrong order");
+        }
+        return true;
 
-		}
-
-
-/*
-		try {
-			InOrder right = inOrder(delegate);
-			right.verify(delegate, atLeast(1)).getCurrentPrice(any(Stock.class));
-
-			right.verify(delegate, atLeast(1)).login("Tom", "123");
-		}
-		catch (Exception e) {
-			throw new VerificationInOrderFailure("Accessed price before login");
-		}
-*/
-		/*
-		try {
-			InOrder wrong = inOrder(delegate);
-			wrong.verify(delegate, atLeast(1)).getCurrentPrice(any(Stock.class));
-			wrong.verify(delegate, times(1)).login("Tom", "123");
-
-		}
-		catch(Exception e){
-			throw new VerificationInOrderFailure("Accessed price before login");
-		}
-		*/
-
-
-		return true;
 	}
 	
 

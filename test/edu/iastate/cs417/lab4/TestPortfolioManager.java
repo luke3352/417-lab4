@@ -33,17 +33,27 @@ public class TestPortfolioManager {
 	
 
 	@Test
-	public void test() {
-		PortfolioManager pm = new PortfolioManager();
-		pm.setPortfolio(holdings);
-		pm.setStockService(factory);
-		double result = pm.getMarketValue();
-		System.out.println("Portfolio value: "+result);
-		assertEquals(92120.24, result, tolerance );
-	}
+    public void test() {
+        PortfolioManager pm = new PortfolioManager();
+        pm.setPortfolio(holdings);
+        pm.setStockService(factory);
+        double result = pm.getMarketValue();
+        System.out.println("Portfolio value: "+result);
+        assertEquals(92120.24, result, tolerance );
+    }
 	
 	//TODO: add other tests to determine if the portfolio manager returns 
 	//           correct values and handles sessions correctly with various size
 	//           portfolios. 
 
+    @Test
+    public void test2() {
+        holdings = PMTestUtil.loadPortfolio("portfolio-99.txt");
+        PortfolioManager pm = new PortfolioManager();
+        pm.setPortfolio(holdings);
+        pm.setStockService(factory);
+        double result = pm.getMarketValue();
+        System.out.println("Portfolio value: "+result);
+        assertEquals(7141527.0, result, tolerance );
+    }
 }

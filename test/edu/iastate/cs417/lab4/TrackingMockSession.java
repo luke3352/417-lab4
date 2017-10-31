@@ -52,8 +52,6 @@ public class TrackingMockSession implements ValidatingStockServiceSession {
 		return delegate.getCurrentPrice(stock);
 	}
 
-	//TrackingMockSession mock = mock(TrackingMockSession.class);
-
 
 	/*
 	Notice the includes in TrackingMockSession. The includes are a big hint about which Mockito
@@ -96,20 +94,45 @@ public class TrackingMockSession implements ValidatingStockServiceSession {
 		//this is where you put "verify() and InOrder()" stuff.
 
 		//verify(mock);
-		//TrackingMockSession track = new TrackingMockSession();
-		//Mockito.doNothing().when(track).login("","");
-		//Mockito.doNothing().when(track).login("","");
 		//inOrder(mock);
 		//InOrder(mock);
 		System.out.println("HELLOOOOOOOOOOO");
 
-		verify(delegate, atLeast(1)).login("Tom", "123");
-
-			/*InOrder right = inOrder(delegate);
-			right.verify(delegate, atLeast(222)).login("Tom", "123");
+		verify(delegate, times(1)).login("Tom", "123");
+		try {
+			InOrder right = inOrder(delegate);
+			right.verify(delegate, times(1)).login("Tom", "123");
 			right.verify(delegate, atLeast(1)).getCurrentPrice(any(Stock.class));
-*/
+			System.out.println("STUFF");
+		}
+		catch (Exception e){
 
+		}
+		try {
+			InOrder wrong = inOrder(delegate);
+			wrong.verify(delegate, atLeast(1)).getCurrentPrice(any(Stock.class));
+			wrong.verify(delegate, times(1)).login("Tom", "123");
+			System.out.println("STUFF2");
+
+			throw new VerificationInOrderFailure("Accessed price before login");
+		}
+		catch (Exception e){
+
+		}
+
+
+/*
+		try {
+			InOrder right = inOrder(delegate);
+			right.verify(delegate, atLeast(1)).getCurrentPrice(any(Stock.class));
+
+			right.verify(delegate, atLeast(1)).login("Tom", "123");
+		}
+		catch (Exception e) {
+			throw new VerificationInOrderFailure("Accessed price before login");
+		}
+*/
+		/*
 		try {
 			InOrder wrong = inOrder(delegate);
 			wrong.verify(delegate, atLeast(1)).getCurrentPrice(any(Stock.class));
@@ -119,10 +142,10 @@ public class TrackingMockSession implements ValidatingStockServiceSession {
 		catch(Exception e){
 			throw new VerificationInOrderFailure("Accessed price before login");
 		}
+		*/
 
 
-
-		return false;
+		return true;
 	}
 	
 

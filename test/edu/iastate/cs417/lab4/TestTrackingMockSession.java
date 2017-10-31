@@ -47,5 +47,38 @@ public class TestTrackingMockSession {
 	}
 
 	//TODO: Add additional tests to confirm that your mock object can detect 
-	 //            order errors, authentication errors,  too many request errors, etc.  
+	 //            order errors, authentication errors,  too many request errors, etc.
+	@Test
+	public void normalCase(){
+		PortfolioManager pm = new PortfolioManager();
+		pm.setPortfolio(holdings);
+		pm.setStockService(factory);
+		StockServiceSession session = factory.getNewSession();
+		session.login("Tom", "123");
+		session.getCurrentPrice(holdings.getHoldings().get(0));
+		factory.getNewSession();
+
+	}
+
+	@Test
+	public void normalCase2(){
+		PortfolioManager pm = new PortfolioManager();
+		pm.setPortfolio(holdings);
+		pm.setStockService(factory);
+		StockServiceSession session = factory.getNewSession();
+		session.login("Tom", "123");
+		factory.getNewSession();
+	}
+
+	@Test(expected=RequestLimitExceededException.class)
+	public void moreThan15(){
+		PortfolioManager pm = new PortfolioManager();
+		pm.setPortfolio(holdings);
+		pm.setStockService(factory);
+		StockServiceSession session = factory.getNewSession();
+		session.login("Tom", "123");
+		for(int i=0; i<20; i++){
+			session.getCurrentPrice(holdings.getHoldings().get(0));
+		}
+	}
 }

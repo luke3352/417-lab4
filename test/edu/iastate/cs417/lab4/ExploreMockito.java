@@ -41,7 +41,7 @@ public class ExploreMockito {
         mMock.work();
         mMock.work();
         verify(mMock,times(1)).init();
-        verify(mMock,atMost(3)).work();
+        verify(mMock,atLeast(4)).work();
 
         InOrder right = inOrder(mMock);
         right.verify(mMock).init();

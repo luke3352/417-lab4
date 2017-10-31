@@ -101,52 +101,82 @@ public class TrackingMockSession implements ValidatingStockServiceSession {
 		//Mockito.doNothing().when(track).login("","");
 		//inOrder(mock);
 		//InOrder(mock);
+		System.out.println("HELLOOOOOOOOOOO");
 
+		verify(delegate, atLeast(1)).login("Tom", "123");
 
-		try {
-			InOrder right = inOrder(delegate);
-			right.verify(delegate, atLeast(1)).login("Tom", "123");
+			/*InOrder right = inOrder(delegate);
+			right.verify(delegate, atLeast(222)).login("Tom", "123");
 			right.verify(delegate, atLeast(1)).getCurrentPrice(any(Stock.class));
-		}
-		catch(Exception e){
+*/
 
-		}
 		try {
 			InOrder wrong = inOrder(delegate);
 			wrong.verify(delegate, atLeast(1)).getCurrentPrice(any(Stock.class));
 			wrong.verify(delegate, times(1)).login("Tom", "123");
 
-			throw new VerificationInOrderFailure("Accessed price before login");
 		}
 		catch(Exception e){
-
+			throw new VerificationInOrderFailure("Accessed price before login");
 		}
 
 
 
-		return true;
+		return false;
 	}
 	
 
 	private void configureMock() 
 	{
+		System.out.println("asdfjasdl;kglkasdgjlks;dagjlkasjdg;lkasjdgl;jasdl;gjalsdg");
 		//TODO: this method configures the Mockito object so that it
 		//expects login and getCurrentPrice calls and it knows how to 
 		//return appropriate responses to both. 
 		//this is where you put "when(...)" stuff.
-		when(login("Tom","123")).thenReturn(true);
+		//when(login("Tom","123")).thenReturn(true);
 		//when(getCurrentPrice(any(Stock.class))).thenReturn(any(Double.class));
+//TODO: this method configures the Mockito object so that it
+		//expects login and getCurrentPrice calls and it knows how to
+		//return appropriate responses to both.
+		//this is where you put "when(...)" stuff.
+		String username = "Tom";
+		String password = "123";
+//		String symbol = "A";
+//		String name = "name";
+//		double quantity = 1.00;
+//		Stock stock = new Stock(symbol, name, quantity);
 
-		//when(mock.getCurrentPrice()).thenAnswer(){
 
-		//}
+		//when(login(username, password)).thenReturn(true);
+		//when(getCurrentPrice(any(Stock.class))).thenReturn(92120.24);
 
+		when(login(any(String.class), any(String.class))).thenAnswer(new Answer <Boolean> () {
+			public Boolean answer (InvocationOnMock invocation) {
+				Object[] args = invocation.getArguments();
+				for(int i = 0; i < args.length; i++) {
+					System.out.println(args[i]);
+				}
+				if(args[0].equals("Tom") && args[1].equals("123")) {
+					return true;
+				}
+				return false;
+			}
+		});
+		when(getCurrentPrice(any(Stock.class))).thenAnswer(new Answer <Double> () {
+			public Double answer (InvocationOnMock invocation) {
+				Object[] args = invocation.getArguments();
+				double toReturn = 0;
+				for(int i = 0; i < args.length; i++) {
+					//System.out.println(args[i]);
+					//System.out.println("Check");
+					System.out.println(((Stock) args[i]).getSymbol());
+					//System.out.println(((Stock) args[i]).currentPrices().);
+					toReturn += currentPrices.get(((Stock) args[i]).getSymbol());// * ((Stock) args[i]).getCurrentPrice();
+				}
+				return toReturn;
+			}
+		});
 
-		// PortfolioBase base = new PortfolioBase();
-		//List<Stock> stocks = base.getHoldings();
-		//for(Stock stock: stocks){
-		//	when(mock.getCurrentPrice(stock));
-		//}
 
 	}
 

@@ -19,8 +19,7 @@ public class PricingSession implements StockServiceSession {
 	}
 
 	@Override
-	public double getCurrentPrice(Stock stock) 
-		throws RequestLimitExceededException
+	public double getCurrentPrice(Stock stock) throws RequestLimitExceededException
 	{
 
 		// NOT TODO FOR LAB  Auto-generated method stub

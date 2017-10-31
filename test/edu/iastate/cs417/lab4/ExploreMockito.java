@@ -35,6 +35,7 @@ public class ExploreMockito {
         Mintf mMock = mock(ExploreMockito.Mintf.class);
         when(mMock.init()).thenReturn(true);
 
+
         mMock.work();
         mMock.init();
         mMock.work();
@@ -46,7 +47,7 @@ public class ExploreMockito {
         right.verify(mMock).init();
         right.verify(mMock,atLeast(2)).work();
         //right.verify(mMock,atLeast(3)).work();
-        try {
+        /*try {
             InOrder wrong = inOrder(mMock);
             wrong.verify(mMock, times(1)).work();
             wrong.verify(mMock).init();
@@ -54,6 +55,6 @@ public class ExploreMockito {
         }
         catch(Exception e){
 
-        }
+        }*/
     }
 }

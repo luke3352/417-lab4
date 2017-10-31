@@ -85,7 +85,7 @@ public class PortfolioManager {
 		int sessionCount = 0;
 		while (sessionCount < StockServiceSession.kMaxPricesPerSession && 
 				sessionCount < stocks.size() &&
-				System.currentTimeMillis() < expireTime){
+				nextToPrice < stocks.size()){
 			Stock currentStock = stocks.get(nextToPrice);
 			currentStock.setCurrentPrice(session.getCurrentPrice(currentStock));
 			sessionCount += 1;

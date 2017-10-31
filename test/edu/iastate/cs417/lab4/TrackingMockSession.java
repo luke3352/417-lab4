@@ -52,7 +52,7 @@ public class TrackingMockSession implements ValidatingStockServiceSession {
 		return delegate.getCurrentPrice(stock);
 	}
 
-	TrackingMockSession mock = mock(TrackingMockSession.class);
+	//TrackingMockSession mock = mock(TrackingMockSession.class);
 
 
 	/*
@@ -102,7 +102,29 @@ public class TrackingMockSession implements ValidatingStockServiceSession {
 		//inOrder(mock);
 		//InOrder(mock);
 
-		return false;
+
+		try {
+			InOrder right = inOrder(delegate);
+			right.verify(delegate, atLeast(1)).login("Tom", "123");
+			right.verify(delegate, atLeast(1)).getCurrentPrice(any(Stock.class));
+		}
+		catch(Exception e){
+
+		}
+		try {
+			InOrder wrong = inOrder(delegate);
+			wrong.verify(delegate, atLeast(1)).getCurrentPrice(any(Stock.class));
+			wrong.verify(delegate, times(1)).login("Tom", "123");
+
+			throw new VerificationInOrderFailure("Accessed price before login");
+		}
+		catch(Exception e){
+
+		}
+
+
+
+		return true;
 	}
 	
 
@@ -112,7 +134,8 @@ public class TrackingMockSession implements ValidatingStockServiceSession {
 		//expects login and getCurrentPrice calls and it knows how to 
 		//return appropriate responses to both. 
 		//this is where you put "when(...)" stuff.
-		//when(mock.login()).thenReturn(true);
+		when(login("Tom","123")).thenReturn(true);
+		//when(getCurrentPrice(any(Stock.class))).thenReturn(any(Double.class));
 
 		//when(mock.getCurrentPrice()).thenAnswer(){
 

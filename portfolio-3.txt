@@ -1,4 +1,4 @@
 Symbol	Quantity
-Stock3	1200
+Stock03	1200
 Stock24	200
-Stock2	104
+Stock02	104

@@ -39,7 +39,7 @@ public class TestPortfolioManager {
 		pm.setStockService(factory);
 		double result = pm.getMarketValue();
 		System.out.println("Portfolio value: "+result);
-		assertEquals(4806.0, result, tolerance );
+		assertEquals(92120.24, result, tolerance );
 	}
 	
 	//TODO: add other tests to determine if the portfolio manager returns 
